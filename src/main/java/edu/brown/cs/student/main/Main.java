@@ -21,6 +21,8 @@ import spark.Spark;
 import spark.TemplateViewRoute;
 import spark.template.freemarker.FreeMarkerEngine;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * The Main class of our project. This is where execution begins.
  */
@@ -67,9 +69,22 @@ public final class Main {
         try {
           input = input.trim();
           String[] arguments = input.split(" ");
+
+          MathBot bot = new MathBot();
+          double num1 = Double.parseDouble(arguments[1]);
+          double num2 = Double.parseDouble(arguments[2]);
+
+          //input is in prefix notation
+          if (arguments[0].equals("+")) {
+            double sum = bot.add(num1, num2);
+            System.out.println(sum);
+
+          } else if(arguments[0].equals("-")) {
+            double difference = bot.subtract(num1, num2);
+            System.out.println(difference);
+          }
           System.out.println(arguments[0]);
-          // TODO: complete your REPL by adding commands for addition "add" and subtraction
-          //  "subtract"
+
         } catch (Exception e) {
           // e.printStackTrace();
           System.out.println("ERROR: We couldn't process your input");
