@@ -1,12 +1,9 @@
 package edu.brown.cs.student.main;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
 import java.util.Map;
+import java.io.BufferedReader;
+import java.util.*;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -20,6 +17,7 @@ import spark.Response;
 import spark.Spark;
 import spark.TemplateViewRoute;
 import spark.template.freemarker.FreeMarkerEngine;
+
 
 import static org.junit.Assert.assertEquals;
 
@@ -36,9 +34,7 @@ public final class Main {
    *
    * @param args An array of command line arguments
    */
-  public static void main(String[] args) {
-    new Main(args).run();
-  }
+  public static void main(String[] args) throws IOException {new Main(args).run();}
 
   private String[] args;
 
@@ -46,7 +42,7 @@ public final class Main {
     this.args = args;
   }
 
-  private void run() {
+  private void run() throws IOException {
     // set up parsing of command line flags
     OptionParser parser = new OptionParser();
 
@@ -62,7 +58,7 @@ public final class Main {
       runSparkServer((int) options.valueOf("port"));
     }
 
-    // TODO: Add your REPL here!
+    //Buffered reader to take input in command line for mathbot problems
     try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
       String input;
       while ((input = br.readLine()) != null) {
@@ -95,7 +91,32 @@ public final class Main {
       System.out.println("ERROR: Invalid input for REPL");
     }
 
+ // Buffered Reader to read csv files
+    // used "KNN algorithm in java" as source for this
+    // link: https://www.youtube.com/watch?v=8kaYD2g9MVQ
+  BufferedReader stbr = new BufferedReader(new FileReader("stardata.csv"));
+    String line = "";
+    List<Stars> starsList = new ArrayList();
+
+    // uses two arguments constructor for x and y vals or three
+    while((line = stbr.readLine()) != null){
+      String k[] = line.split(",");
+      Stars stars1 = new Stars(k[0], Integer.parseInt(k[1]), Integer.parseInt(k[2]), Integer.parseInt(k[3]));
+      Stars stars2 = new Stars(k[0], Integer.parseInt(k[1]), Integer.parseInt(k[2]));
+      starsList.add(stars1);
+      starsList.add(stars2);
+    }
+    // example star object, except this should actually work for every type of input in stars to return nearest
+    Stars s1 = new Stars("Lonely Star" , 5, -2.24 );
+    List<Stars> cs = new ArrayList<>();
+    Collections.sort(cs);
+    for(int i = 0; i <3; i++)
+    {
+      System.out.println(cs.get(i));
+    }
+
   }
+
 
   private static FreeMarkerEngine createEngine() {
     Configuration config = new Configuration(Configuration.VERSION_2_3_0);
