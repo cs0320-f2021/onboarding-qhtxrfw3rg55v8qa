@@ -22,3 +22,8 @@ I also implemented a comparable interface that allows to compare objects to one 
 
 Error/Bugs:
 Naive neighbors command doesnt work in the repl.
+
+Credit for code
+Source : "KNN Algorithm in java"
+Link: https://www.youtube.com/watch?v=8kaYD2g9MVQ
+
